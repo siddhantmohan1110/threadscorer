@@ -14,7 +14,7 @@
 
 ## Score formula
 
-$score = 2 * n_likes + 3 * n_replies + 2.5 * n_reposts * exp(-age_minutes/120)$
+$score = 2 * {n}_{likes} + 3 * {n}_{replies} + 2.5 * {n}_{reposts} * exp(-{age_minutes}/120)$
 
 This score formula gives highest weightage to replies, followed by reposts and lastly by likes. The weightage given to reposts is decayed exponentially based on the age of the post (in minutes).
 
