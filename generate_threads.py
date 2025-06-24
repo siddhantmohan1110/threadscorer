@@ -2,6 +2,11 @@ import pandas as pd
 import numpy as np
 import random
 
+# Set random seed for reproducibility
+SEED = 42
+np.random.seed(SEED)
+random.seed(SEED)
+
 # Choose a random number of threads between 100 and 500
 num_threads = random.randint(100, 500)
 
