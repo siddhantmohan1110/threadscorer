@@ -11,10 +11,7 @@ def calculate_average_score_per_user(input_csv_path: str = "threads_with_users.c
     return average_scores_df
 
 
-
 def plot_user_performance_distribution(df_user_scores: pd.DataFrame, plot_path: str):
-
-
     #generate plot for each user
     plt.figure(figsize=(10, 6))
     plt.hist(df_user_scores['score'], bins=20, edgecolor='black', alpha=0.7)

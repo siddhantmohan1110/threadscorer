@@ -2,7 +2,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def generate_and_save_plots(df_full_scored: pd.DataFrame, df_top_10: pd.DataFrame, path_scatter: str, path_bar_plot:str):
-
     # --- Plot 1: Score vs. Age of Thread ---
     plt.figure(figsize=(8, 6))
     plt.scatter(df_full_scored['age_minutes'], df_full_scored['score'], alpha=0.7)

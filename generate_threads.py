@@ -5,15 +5,11 @@ import random
 # Set random seed for reproducibility
 SEED = 42
 
-
 def generate_synthetic_thread_data(num_threads_min=100, num_threads_max=500):
 # Choose a random number of threads between 100 and 500
     np.random.seed(SEED)
     random.seed(SEED)
-
     num_threads = random.randint(num_threads_min, num_threads_max)
-    
-
 
     # Generate synthetic data
     data = {
