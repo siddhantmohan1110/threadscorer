@@ -9,11 +9,17 @@
 
 ```plot_threads.py``` : Plots the score v age scatter plot of the dataset and the engagements of the top 10 threads.
 
+```Threads_Score_Engine_v1.0.ipynb``` : Displays same code in Jupyter notebook form for easy reference.
+
 ## Score formula
 
-```score = 2 * n_likes + 3 * n_replies + 2.5 * n_reposts * exp(-age_minutes / 120)```
+1 . ```score = 2 * n_likes + 3 * n_replies + 2.5 * n_reposts * exp(-age_minutes / 120)```
 
 This score formula gives highest weightage to replies, followed by reposts and lastly by likes. The weightage given to reposts is decayed exponentially based on the age of the post (in minutes). A decay constant of 120 is used, which means that the score of a post halves after around ```120 *ln(2)``` minutes, or approximately 83 minutes. This ensures that the value of the engagement metrics is tempered by the age of the thread.
+
+2. ```score = (2 * n_likes + 3 * n_replies + 2.5 * n_reposts) * exp(-age_minutes / 120)```
+
+The overall score is decayed based on the age of the post, not just the number of reposts. This ensures that the three types of engagement are treated equally w.r.t age.
 
 ## Installation and setup
 1. Clone the repository locally and navigate to the directory.
@@ -39,9 +45,13 @@ pip install -r requirements.txt
 python3 generate_threads.py
 ```
 
-2. To score the dataset
+2. To score the dataset with formula 1
 ```bash
 python3 score_threads.py
+```
+To score the dataset with formula 2
+```bash
+python3 score_threads.py --formula 2
 ```
 
 3. To get the top 10 threads and their corresponding metadata
@@ -55,7 +65,7 @@ python3 plot_threads.py
 ```
 
 ## Results
-From dataset generated using seed 42
+From dataset generated using seed 42 and evaluated using score formula 1
 
 ![Score vs Age Scatter Plot](images/score_vs_age.png)
 
