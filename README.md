@@ -49,9 +49,10 @@ An Alternate Scoring function is used to simulate diminishing returns.
 
 ## Run the Complete Data Pipeline
 
-```python3 main.py
+```python3 main.py```
 
 ## Results
+
 From dataset generated using seed 42
 
 ![Score vs Age Scatter Plot](images/score_vs_age.png)
