@@ -1,3 +1,4 @@
+import argparse
 import pandas as pd
 import numpy as np
 
@@ -32,4 +33,3 @@ if __name__ == "__main__":
 
     df_scored.to_csv(csv_path_scored_from_loaded, index=False)
     df_scored.to_csv(csv_path_scored_from_loaded_alternate, index=False)
-
