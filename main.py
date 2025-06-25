@@ -26,7 +26,7 @@ def run_full_pipeline():
 
     # 2. Calculate engagement score
     print("\n2. Calculating engagement scores...")
-    df_scored = score_threads_data(df_threads)
+    df_scored = score_threads_data(df_threads, decay_constant=120)
     print("Engagement scores calculated.")
 
     # (Optional) Save the full scored DataFrame to CSV if needed by external processes
