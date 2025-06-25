@@ -34,7 +34,7 @@ python -m venv .venv
 source .venv/bin/activate
 ```
 
-3. Run within the environment.
+3. Install dependencies within the environment.
 ```bash
 pip install -r requirements.txt
 ``` 
