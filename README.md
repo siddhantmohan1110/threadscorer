@@ -1,25 +1,32 @@
 # threadscorer : A thread scoring engine for social media feeds
 
 ## Files in the repository
-```generate_threads.py``` : Generates a synthetic CSV dataset of threads with unique ID, number of likes, replies, reposts and age in minutes.
 
-```score_threads.py``` : Computes an engagement score using vectorized calculations for each thread using the score formula, and appends it as a column to the existing CSV and creates a new scored CSV dataset.
+```main.py```: The main script to run the full data processing and analysis pipeline.
 
-```sort_threads.py``` : Sorts the scored CSV dataset based on the engagement score and extracts the top 10 threads along with metadata, and saves it in another CSV dataset.
+```generate_threads.py```: Module for generating the synthetic threads.csv dataset.
 
-```plot_threads.py``` : Plots the score v age scatter plot of the dataset and the engagements of the top 10 threads.
+```score_threads.py```: Module containing the original and alternate scoring logic.
 
-```Threads_Score_Engine_v1.0.ipynb``` : Displays same code in Jupyter notebook form for easy reference.
+```sort_threads.py```: Module for sorting threads by score and extracting the top 10.
 
-## Score formula
+```multi_user.py```: Module for assigning simulated user IDs to each thread.
 
-1 . ```score = 2 * n_likes + 3 * n_replies + 2.5 * n_reposts * exp(-age_minutes / 120)```
+```multi_user_analysis.py```: Module for calculating per-user average scores and plotting the results.
 
-This score formula gives highest weightage to replies, followed by reposts and lastly by likes. The weightage given to reposts is decayed exponentially based on the age of the post (in minutes). A decay constant of 120 is used, which means that the score of a post halves after around ```120 *ln(2)``` minutes, or approximately 83 minutes. This ensures that the value of the engagement metrics is tempered by the age of the thread.
+```plot_threads.py```: Module for generating score vs. age and top 10 engagement plots.
 
-2. ```score = (2 * n_likes + 3 * n_replies + 2.5 * n_reposts) * exp(-age_minutes / 120)```
+```requirements.txt```: A file listing the Python packages required to run the project.
 
-The overall score is decayed based on the age of the post, not just the number of reposts. This ensures that the three types of engagement are treated equally w.r.t age.
+## Scoring functions
+
+1. ```score = 2 * n_likes + 3 * n_replies + 2.5 * n_reposts * exp(-age_minutes / 120)```
+
+This scoring function gives highest weightage to replies, followed by reposts and lastly by likes. The weightage given to reposts is decayed exponentially based on the age of the post (in minutes). This ensures that the value of the engagement metrics is tempered by the age of the thread. 
+
+2. ```alternate_score = (np.log2((likes * 2) + 1) + np.log2((replies * 3) + 1) + np.log2((reposts * 2.5) + 1)) * np.exp(-age_minutes / decay_constant)```
+
+This scoring function is used to simulate diminishing returns by using decaying all three engagements based on age of the post, in minutes.
 
 ## Installation and setup
 1. Clone the repository locally and navigate to the directory.
@@ -45,13 +52,9 @@ pip install -r requirements.txt
 python3 generate_threads.py
 ```
 
-2. To score the dataset with formula 1
+2. To score the dataset with both functions
 ```bash
 python3 score_threads.py
-```
-To score the dataset with formula 2
-```bash
-python3 score_threads.py --formula 2
 ```
 
 3. To get the top 10 threads and their corresponding metadata
@@ -65,8 +68,17 @@ python3 plot_threads.py
 ```
 
 ## Results
-From dataset generated using seed 42 and evaluated using score formula 1
+
+### From dataset generated using seed 42, with scoring function 1
 
 ![Score vs Age Scatter Plot](images/score_vs_age.png)
 
 ![Top 10 Engagements](images/top10_engagements.png)
+
+### From dataset generated using seed 42, with scoring function 2
+
+![Alternate Score vs Age Scatter Plot](images/alter_score_vs_age.png)
+
+![Alternate Top 10 Engagements](images/alter_top10_engagements.png)
+
+![Alternate User Score Distribution](images/alter_user_score_distribution.png)
