@@ -18,6 +18,10 @@
 
 This score formula gives highest weightage to replies, followed by reposts and lastly by likes. The weightage given to reposts is decayed exponentially based on the age of the post (in minutes). This ensures that the value of the engagement metrics is tempered by the age of the thread. 
 
+An Alternate Scoring function is used to simulate diminishing returns.
+
+alternate_score = $(\log_2(\text{likes} \times 2 + 1) + \log_2(\text{replies} \times 3 + 1) + \log_2(\text{reposts} \times 2.5 + 1)) \times e^{\frac{-\text{age\_minutes}}{\text{decay\_constant}}}$
+
 ## Running the threadscorer
 1. To generate the dataset
 
@@ -37,3 +41,10 @@ From dataset generated using seed 42
 ![Score vs Age Scatter Plot](images/score_vs_age.png)
 
 ![Top 10 Engagements](images/top10_engagements.png)
+
+Using Alternate Scoring function
+
+![Alternate Score vs Age Scatter Plot](images/alter_score_vs_age.png)
+![Alternate Top 10 Engagements](images/alter_top10_engagements.png)
+![Alternate User Score Distribution](images/alter_user_score_distribution.png)
+
