@@ -4,24 +4,32 @@ import random
 
 # Set random seed for reproducibility
 SEED = 42
-np.random.seed(SEED)
-random.seed(SEED)
 
+
+def generate_synthetic_thread_data(num_threads_min=100, num_threads_max=500):
 # Choose a random number of threads between 100 and 500
-num_threads = random.randint(100, 500)
+    np.random.seed(SEED)
+    random.seed(SEED)
 
-# Generate synthetic data
-data = {
-    'thread_id': list(range(1, num_threads + 1)),
-    'likes': np.random.randint(0, 101, num_threads),
-    'replies': np.random.randint(0, 51, num_threads),
-    'reposts': np.random.randint(0, 31, num_threads),
-    'age_minutes': np.random.randint(0, 361, num_threads)
-}
+    num_threads = random.randint(num_threads_min, num_threads_max)
+    
 
-# Create a DataFrame
-df_threads = pd.DataFrame(data)
+
+    # Generate synthetic data
+    data = {
+        'thread_id': list(range(1, num_threads + 1)),
+        'likes': np.random.randint(0, 101, num_threads),
+        'replies': np.random.randint(0, 51, num_threads),
+        'reposts': np.random.randint(0, 31, num_threads),
+        'age_minutes': np.random.randint(0, 361, num_threads)
+    }
+
+    # Create a DataFrame
+    df_threads = pd.DataFrame(data)
+    return df_threads
 
 # Save to CSV
-csv_path = "threads.csv"
-df_threads.to_csv(csv_path, index=False)
+if __name__ == "__main__":
+    df_generated = generate_synthetic_thread_data()
+    csv_path = "threads.csv"
+    df_generated.to_csv(csv_path, index=False)
