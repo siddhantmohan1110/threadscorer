@@ -17,34 +17,42 @@ This score formula gives highest weightage to replies, followed by reposts and l
 
 ## Installation and setup
 1. Clone the repository locally and navigate to the directory.
-```git clone https://github.com/siddhantmohan1110/threadscorer.git```
-
-```cd threadscorer```
+```bash
+git clone https://github.com/siddhantmohan1110/threadscorer.git
+cd threadscorer
+```
 
 2. Create a virtual environment and activate it.
-```python3 -m venv .venv```
-
-```source .venv/bin/activate```
+```bash 
+python -m venv .venv
+source .venv/bin/activate
+```
 
 3. Run within the environment.
-```pip install -r requirements.txt``` 
+```bash
+pip install -r requirements.txt
+``` 
 
 ## Running the threadscorer
 1. To generate the dataset
-
-```python3 generate_threads.py```
+```bash
+python3 generate_threads.py
+```
 
 2. To score the dataset
-
-```python3 score_threads.py```
+```bash
+python3 score_threads.py
+```
 
 3. To get the top 10 threads and their corresponding metadata
-
-```python3 sort_threads.py```
+```bash
+python3 sort_threads.py
+```
 
 4. To get the score v age scatter plot and the engagements of the top 10 threads.
-
-```python3 plot_threads.py```
+```bash
+python3 plot_threads.py
+```
 
 ## Results
 From dataset generated using seed 42
