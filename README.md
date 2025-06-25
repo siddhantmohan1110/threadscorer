@@ -6,11 +6,23 @@
 3. Run ```pip install -r requirements.txt``` within the environment.
 
 ## Files in the repository
-```generate_threads.py``` : Generates a synthetic CSV dataset of threads with unique ID, number of likes, replies, reposts and age in minutes.
 
-```score_threads.py``` : Computes an engagement score using vectorized calculations for each thread using the score formula, and appends it as a column to the existing CSV and creates a new scored CSV dataset.
+```main.py```: The main script to run the full data processing and analysis pipeline.
 
-```sort_threads.py``` : Sorts the scored CSV dataset based on the engagement score and extracts the top 10 threads along with metadata, and saves it in another CSV dataset.
+```generate_threads.py```: Module for generating the synthetic threads.csv dataset.
+
+```score_threads.py```: Module containing the original and alternate scoring logic.
+
+```sort_threads.py```: Module for sorting threads by score and extracting the top 10.
+
+```multi_user.py```: Module for assigning simulated user IDs to each thread.
+
+```multi_user_analysis.py```: Module for calculating per-user average scores and plotting the results.
+
+```plot_threads.py```: Module for generating score vs. age and top 10 engagement plots.
+
+requirements.txt: A file listing the Python packages required to run the project.
+ 
 
 ## Score formula
 
@@ -20,7 +32,7 @@ This score formula gives highest weightage to replies, followed by reposts and l
 
 An Alternate Scoring function is used to simulate diminishing returns.
 
-alternate_score = $(\log_2(\text{likes} \times 2 + 1) + \log_2(\text{replies} \times 3 + 1) + \log_2(\text{reposts} \times 2.5 + 1)) \times e^{\frac{-\text{age\_minutes}}{\text{decay\_constant}}}$
+```alternate_score = (np.log2((likes * 2) + 1) + np.log2((replies * 3) + 1) + np.log2((reposts * 2.5) + 1)) * np.exp(-age_minutes / decay_constant)```
 
 ## Running the threadscorer
 1. To generate the dataset
@@ -35,6 +47,10 @@ alternate_score = $(\log_2(\text{likes} \times 2 + 1) + \log_2(\text{replies} \t
 
 ```python3 sort_threads.py```
 
+## Run the Complete Data Pipeline
+
+```python3 main.py
+
 ## Results
 From dataset generated using seed 42
 
@@ -45,6 +61,8 @@ From dataset generated using seed 42
 Using Alternate Scoring function
 
 ![Alternate Score vs Age Scatter Plot](images/alter_score_vs_age.png)
+
 ![Alternate Top 10 Engagements](images/alter_top10_engagements.png)
+
 ![Alternate User Score Distribution](images/alter_user_score_distribution.png)
 
