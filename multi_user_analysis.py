@@ -12,7 +12,7 @@ def calculate_average_score_per_user(input_csv_path: str = "threads_with_users.c
 
 
 
-def plot_user_performance_distribution(df_user_scores: pd.DataFrame):
+def plot_user_performance_distribution(df_user_scores: pd.DataFrame, plot_path: str):
 
 
     #generate plot for each user
@@ -24,7 +24,6 @@ def plot_user_performance_distribution(df_user_scores: pd.DataFrame):
     plt.grid(axis='y', alpha=0.75)
     plt.tight_layout()
 
-    plot_path = "images/user_score_distribution.png"
     plt.savefig(plot_path)
     plt.close() # Close the figure to free up memory
 

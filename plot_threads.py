@@ -1,7 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def generate_and_save_plots(df_full_scored: pd.DataFrame, df_top_10: pd.DataFrame):
+def generate_and_save_plots(df_full_scored: pd.DataFrame, df_top_10: pd.DataFrame, path_scatter: str, path_bar_plot:str):
 
     # --- Plot 1: Score vs. Age of Thread ---
     plt.figure(figsize=(8, 6))
@@ -11,7 +11,7 @@ def generate_and_save_plots(df_full_scored: pd.DataFrame, df_top_10: pd.DataFram
     plt.title('Score vs. Age of Thread')
     plt.grid(True)
     plt.tight_layout()
-    plt.savefig("images/score_vs_age.png")
+    plt.savefig(path_scatter)
     plt.close() # Close the figure to free up memory
 
     # --- Plot 2: Distribution of engagement types across top 10 threads ---
@@ -23,7 +23,7 @@ def generate_and_save_plots(df_full_scored: pd.DataFrame, df_top_10: pd.DataFram
     plt.title('Distribution of Engagement Types Across Top 10 Threads')
     plt.xticks(rotation=45)
     plt.tight_layout()
-    plt.savefig("images/top10_engagements.png")
+    plt.savefig(path_bar_plot)
     plt.close() # Close the figure
 
 if __name__ == "__main__":    
