@@ -48,7 +48,10 @@ $$
 
 - **Base Timeframe:** 7 days (split into 7 daily periods: P₁, P₂, ..., P₇)
 - **Step 1:** Calculate daily scores S₁, S₂, ..., S₇ for each period.
-- **Step 2:** Compute total score \( S_t = S_1 + S_2 + ... + S_7 \).
+- **Step 2:** Compute total score:
+  $$
+  S_t = S_1 + S_2 + ... + S_7
+  $$
 - **Step 3:** Apply time decay weights:
 
 $$
