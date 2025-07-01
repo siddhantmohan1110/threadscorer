@@ -49,9 +49,7 @@ $$
 - **Base Timeframe:** 7 days (split into 7 daily periods: P₁, P₂, ..., P₇)
 - **Step 1:** Calculate daily scores S₁, S₂, ..., S₇ for each period.
 - **Step 2:** Compute total score:
-  $$
-  S_t = S_1 + S_2 + ... + S_7
-  $$
+    St = S1 + S2 + ... + S7
 - **Step 3:** Apply time decay weights:
 
 $$
@@ -69,20 +67,14 @@ $$
 
 ## Trending Category/Topic/Asset Score
 
-**Trending Category Score:**  
-$$
-= \frac{\text{Sum of Pf for each post in the Category}}{\text{Number of posts in that Category}}
-$$
+Trending Category Score:
+    = (Sum of Pf for each post in the Category) / (Number of posts in that Category)
 
-**Trending Topic Score:**  
-$$
-= \frac{\text{Sum of Pf for each post in the Topic}}{\text{Number of posts in that Topic}}
-$$
+Trending Topic Score:
+    = (Sum of Pf for each post in the Topic) / (Number of posts in that Topic)
 
-**Trending Asset Score:**  
-$$
-= \frac{\text{Sum of Pf for each post in the Asset}}{\text{Number of posts in that Asset}}
-$$
+Trending Asset Score:
+    = (Sum of Pf for each post in the Asset) / (Number of posts in that Asset)
 
 ---
 
