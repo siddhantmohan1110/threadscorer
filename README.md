@@ -2,83 +2,117 @@
 
 ## Files in the repository
 
-```main.py```: The main script to run the full data processing and analysis pipeline.
-
-```generate_threads.py```: Module for generating the synthetic threads.csv dataset.
-
-```score_threads.py```: Module containing the original and alternate scoring logic.
-
-```sort_threads.py```: Module for sorting threads by score and extracting the top 10.
-
-```multi_user.py```: Module for assigning simulated user IDs to each thread.
-
-```multi_user_analysis.py```: Module for calculating per-user average scores and plotting the results.
-
-```plot_threads.py```: Module for generating score vs. age and top 10 engagement plots.
-
-```requirements.txt```: A file listing the Python packages required to run the project.
+- `main.py`: The main script to run the full data processing and analysis pipeline.
+- `generate_threads.py`: Module for generating the synthetic threads.csv dataset, now including likes, dislikes, replies, reposts, other interactions, cursory and engaged views, and age.
+- `score_normalized.py`: Module for calculating the Normalized Trending Post Score, fully parameterized for weights.
+- `score_time_weighted.py`: Module for calculating the Time-Weighted Trending Post Score, with adjustable decay constant.
+- `score_category_topic_asset.py`: Module for calculating trending scores for categories, topics, and assets.
+- `score_threads.py`: Module containing the original and alternate scoring logic.
+- `sort_threads.py`: Module for sorting threads by score and extracting the top 10.
+- `multi_user.py`: Module for assigning simulated user IDs to each thread.
+- `multi_user_analysis.py`: Module for calculating per-user average scores and plotting the results.
+- `plot_threads.py`: Module for generating score vs. age and top 10 engagement plots.
+- `requirements.txt`: A file listing the Python packages required to run the project.
+- `app.py`: FastAPI web app for interactive demo (see below).
 
 ## Scoring functions
 
-1. ```score = 2 * n_likes + 3 * n_replies + 2.5 * n_reposts * exp(-age_minutes / 120)```
+### 1. Normalized Trending Post Score
 
-This scoring function gives highest weightage to replies, followed by reposts and lastly by likes. The weightage given to reposts is decayed exponentially based on the age of the post (in minutes). This ensures that the value of the engagement metrics is tempered by the age of the thread. 
+This score uses a weighted sum of shares, other interactions, comments, likes, dislikes, and views, normalized by the total interactions. All weights and parameters are easily adjustable.
 
-2. ```alternate_score = (np.log2((likes * 2) + 1) + np.log2((replies * 3) + 1) + np.log2((reposts * 2.5) + 1)) * np.exp(-age_minutes / decay_constant)```
+### 2. Time-Weighted Trending Post Score
 
-This scoring function is used to simulate diminishing returns by using decaying all three engagements based on age of the post, in minutes.
+This score applies an exponential decay to the normalized score over time periods (e.g., days), allowing recent activity to have more influence. The decay constant is fully parameterized.
 
-## Installation and setup
-1. Clone the repository locally and navigate to the directory.
+### 3. Trending Category/Topic/Asset Score
+
+These scores aggregate the normalized or time-weighted scores for all posts in a given category, topic, or asset.
+
+### 4. Original and Alternate Scores
+
+Legacy scoring functions are also included for comparison.
+
+## Web App Demo
+
+A FastAPI web app (`app.py`) is included for interactive demonstration.  
+- The app generates a fixed set of synthetic threads (using a constant random seed).
+- Users can adjust all weights and the decay constant via a web panel.
+- The app instantly recalculates and displays all scores (original, alternate, normalized, and time-weighted) for each thread.
+
+---
+
+## Installation and Setup
+
+### 1. Clone the repository and navigate to the directory
 ```bash
 git clone https://github.com/siddhantmohan1110/threadscorer.git
 cd threadscorer
 ```
 
-2. Create a virtual environment and activate it.
-```bash 
+### 2. Create a virtual environment and activate it
+```bash
 python -m venv .venv
 source .venv/bin/activate
 ```
 
-3. Install dependencies within the environment.
+### 3. Install dependencies
 ```bash
 pip install -r requirements.txt
-``` 
-
-## Running the threadscorer
-1. To generate the dataset
-```bash
-python3 generate_threads.py
 ```
 
-2. To score the dataset with both functions
+---
+
+## Running the Data Pipeline
+
+To run the full data pipeline and generate all outputs:
 ```bash
-python3 score_threads.py
+python main.py
 ```
 
-3. To get the top 10 threads and their corresponding metadata
+---
+
+## Running the FastAPI Backend
+
+To launch the interactive demo API:
 ```bash
-python3 sort_threads.py
+uvicorn app:app --reload
 ```
+- Open your browser and go to [http://localhost:8000/docs](http://localhost:8000/docs) for the API documentation and testing.
+- The `/scores` endpoint accepts POST requests with weights and decay constant, and returns all thread scores in JSON format.
 
-4. To get the score v age scatter plot and the engagements of the top 10 threads.
-```bash
-python3 plot_threads.py
-```
+---
 
-## Results
+## Running the Frontend (Optional)
 
-### From dataset generated using seed 42, with scoring function 1
+A sample frontend is provided in a separate folder (e.g., `threadscorer-frontend/`).  
+To run the frontend:
 
-![Score vs Age Scatter Plot](images/score_vs_age.png)
+1. Navigate to the frontend directory:
+   ```bash
+   cd threadscorer-frontend
+   ```
 
-![Top 10 Engagements](images/top10_engagements.png)
+2. Install frontend dependencies:
+   ```bash
+   npm install
+   ```
 
-### From dataset generated using seed 42, with scoring function 2
+3. Start the frontend development server:
+   ```bash
+   npm run dev
+   ```
+   - Open the URL shown in your terminal (usually [http://localhost:5173](http://localhost:5173)).
 
-![Alternate Score vs Age Scatter Plot](images/alter_score_vs_age.png)
+**Note:** The frontend expects the FastAPI backend to be running at `http://localhost:8000`.
 
-![Alternate Top 10 Engagements](images/alter_top10_engagements.png)
+---
 
-![Alternate User Score Distribution](images/alter_user_score_distribution.png)
+## Notes
+
+- All scoring weights and parameters are easily adjustable in both the pipeline and the web app, making this project ready for integration with an admin panel or further web development.
+- The synthetic data is generated with a fixed random seed for reproducibility in demos.
+
+---
+
+*For more details on the scoring algorithms, see `Trend Post Score.md`.*

@@ -15,8 +15,12 @@ def generate_synthetic_thread_data(num_threads_min=100, num_threads_max=500):
     data = {
         'thread_id': list(range(1, num_threads + 1)),
         'likes': np.random.randint(0, 101, num_threads),
+        'dislikes': np.random.randint(0, 51, num_threads),
         'replies': np.random.randint(0, 51, num_threads),
         'reposts': np.random.randint(0, 31, num_threads),
+        'other_interactions': np.random.randint(0, 51, num_threads),
+        'cursory_views': np.random.randint(0, 201, num_threads),
+        'engaged_views': np.random.randint(0, 101, num_threads),
         'age_minutes': np.random.randint(0, 361, num_threads)
     }
 
