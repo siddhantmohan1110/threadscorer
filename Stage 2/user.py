@@ -13,7 +13,7 @@ class User:
 
     def interact(self, post: Post):
         """
-        User interacts (e.g., scrolls or hovers). Lower weight than full engagement.
+        User interacts (e.g., likes or shares). Higher weight than engagement.
         """
         if post.topics_vector is None:
             raise ValueError("Post must be classified before interaction.")
@@ -23,7 +23,7 @@ class User:
 
     def engage(self, post: Post):
         """
-        User engages strongly (e.g., likes, comments, shares). Higher influence on profile.
+        User engages (e.g., views for 5+ seconds). Lower influence on profile.
         """
         if post.topics_vector is None:
             raise ValueError("Post must be classified before engagement.")
