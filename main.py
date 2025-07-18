@@ -10,7 +10,7 @@ from sort_threads import get_top_threads
 from multi_user import assign_users_to_threads
 from plot_threads import generate_and_save_plots
 from plot_threads import generate_and_save_plots
-from multi_user_analysis import calculate_average_score_per_user, plot_user_performance_distribution # <--- UPDATED IMPORT
+from multi_user_analysis import calculate_average_score_per_user, plot_user_performance_distribution
 from score_normalized import calculate_normalized_trending_post_score
 from score_time_weighted import calculate_time_weighted_score
 from score_category_topic_asset import calculate_trending_category_score
