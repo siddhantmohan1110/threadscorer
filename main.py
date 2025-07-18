@@ -14,6 +14,7 @@ from multi_user_analysis import calculate_average_score_per_user, plot_user_perf
 from score_normalized import calculate_normalized_trending_post_score
 from score_time_weighted import calculate_time_weighted_score
 from score_category_topic_asset import calculate_trending_category_score
+from score_probability import recommend_threads_exponential, recommend_threads_logistic
 
 
 def run_full_pipeline():
@@ -25,6 +26,8 @@ def run_full_pipeline():
         'a1': 0.8, 'a2': 0.1, 'b1': 0.1, 'b2': 0.3
     }
     decay_constant = 0.1
+    inflection = 120.0  # Logistic function inflection point
+    steepness = 20.0    # Logistic function steepness
 
     # 1. Generate the synthetic data
     print("\n1. Generating synthetic thread data...")
@@ -94,15 +97,37 @@ def run_full_pipeline():
     df_with_users.to_csv(csv_path_with_users, index=False)
     print(f"Data with user assignments saved to {csv_path_with_users}")
 
-    # 7. Get top 10 threads
-    print("\n7. Getting top 10 threads...")
-    df_top_10 = get_top_threads(df_scored, top_n=10)
-    print("Top 10 threads extracted.")
+    # 7. Get recommended threads using probability-based selection
+    print("\n7. Getting recommended threads using probability-based selection...")
+    
+    # Use the time-weighted scores with probability-based selection
+    df_recommended = recommend_threads_exponential(
+        df_periods,
+        n_recommendations=10,
+        period_col='period',
+        score_col='normalized_score',
+        decay_constant=decay_constant,
+        random_seed=42  # For reproducibility
+    )
+    print("Top 10 recommended threads selected using probability-based sampling.")
+    
+    # Merge with original data to get full thread information
+    df_recommended_full = df_recommended.merge(
+        df_periods[['thread_id', 'likes', 'replies', 'reposts', 'age_minutes', 'normalized_score']], 
+        on='thread_id', 
+        how='left'
+    )
 
-    # (Optional) Save the top 10 threads to CSV if needed by external processes
-    csv_path_top_threads = "top_threads.csv"
+    # (Optional) Save the recommended threads to CSV
+    csv_path_recommended_threads = "recommended_threads.csv"
+    df_recommended_full.to_csv(csv_path_recommended_threads, index=False)
+    print(f"Recommended threads saved to {csv_path_recommended_threads}")
+    
+    # Also keep the old deterministic method for comparison
+    df_top_10 = get_top_threads(df_scored, top_n=10)
+    csv_path_top_threads = "top_threads_deterministic.csv"
     df_top_10.to_csv(csv_path_top_threads, index=False)
-    print(f"Top 10 threads saved to {csv_path_top_threads}")
+    print(f"Deterministic top 10 threads saved to {csv_path_top_threads}")
 
     # 8. Calculate Average Post Score for Each User
     print("\n8. Calculating average post score per user...")
@@ -124,8 +149,8 @@ def run_full_pipeline():
         print("Could not calculate user average scores or plot distribution.")
 
     # 9. Generate and save plots
-    # This function expects the full scored DataFrame and the top 10 DataFrame
-    generate_and_save_plots(df_scored, df_top_10, path_scatter="images/score_vs_age.png", path_bar_plot="images/top10_engagements.png")
+    # This function expects the full scored DataFrame and the recommended DataFrame
+    generate_and_save_plots(df_scored, df_recommended_full, path_scatter="images/score_vs_age.png", path_bar_plot="images/top10_engagements.png")
 
         # --- ALTERNATE SCORING PIPELINE (STEP 10) ---
     print("\n--- Running Alternate Scoring Pipeline ---")
@@ -149,15 +174,41 @@ def run_full_pipeline():
     df_with_users_alternate.to_csv(csv_path_with_users_alternate, index=False)
     print(f"ALTERNATE data with user assignments saved to {csv_path_with_users_alternate}")
 
-    # 10c. Get top 10 threads (Alternate Scored Data)
-    print("\n10c. Getting top 10 ALTERNATE scored threads...")
-    # IMPORTANT: get_top_threads needs to be flexible for 'alternate_score'
-    df_top_10_alternate = get_top_threads(df_scored_alternate, top_n=10)
-    print("Top 10 ALTERNATE threads extracted.")
+    # 10c. Get recommended threads using probability-based selection (Alternate Scored Data)
+    print("\n10c. Getting recommended ALTERNATE scored threads using probability-based selection...")
+    
+    # Create periods for alternate data and get time-weighted scores for probability selection
+    df_alternate_periods = df_with_users_alternate.copy()
+    df_alternate_periods['period'] = np.random.randint(0, 7, len(df_alternate_periods))
+    df_alternate_periods['normalized_score'] = df_alternate_periods['score']  # Use alternate score as normalized score
+    
+    # Use probability-based selection for alternate scoring
+    df_recommended_alternate = recommend_threads_exponential(
+        df_alternate_periods,
+        n_recommendations=10,
+        period_col='period',
+        score_col='normalized_score',
+        decay_constant=decay_constant,
+        random_seed=42  # For reproducibility
+    )
+    print("Top 10 ALTERNATE recommended threads selected using probability-based sampling.")
+    
+    # Merge with original data to get full thread information
+    df_recommended_alternate_full = df_recommended_alternate.merge(
+        df_alternate_periods[['thread_id', 'likes', 'replies', 'reposts', 'age_minutes', 'score']], 
+        on='thread_id', 
+        how='left'
+    )
 
-    csv_path_top_threads_alternate = "top_threads_alternate.csv"
+    csv_path_recommended_threads_alternate = "recommended_threads_alternate.csv"
+    df_recommended_alternate_full.to_csv(csv_path_recommended_threads_alternate, index=False)
+    print(f"ALTERNATE recommended threads saved to {csv_path_recommended_threads_alternate}")
+    
+    # Keep deterministic method for comparison
+    df_top_10_alternate = get_top_threads(df_scored_alternate, top_n=10)
+    csv_path_top_threads_alternate = "top_threads_alternate_deterministic.csv"
     df_top_10_alternate.to_csv(csv_path_top_threads_alternate, index=False)
-    print(f"Top 10 ALTERNATE threads saved to {csv_path_top_threads_alternate}")
+    print(f"Deterministic top 10 ALTERNATE threads saved to {csv_path_top_threads_alternate}")
 
     # 10d. Calculate Average Post Score for Each User (Alternate Scored Data)
     print("\n10d. Calculating average post score per user for ALTERNATE data...")

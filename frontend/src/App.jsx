@@ -6,7 +6,8 @@ import {
 
 const defaultWeights = {
   w1: 0.35, w2: 0.25, w3: 0.25, w4: 0.10, w5: 0.05,
-  a1: 0.8, a2: 0.1, b1: 0.1, b2: 0.3, decay_constant: 0.1
+  a1: 0.8, a2: 0.1, b1: 0.1, b2: 0.3, decay_constant: 0.1,
+  inflection: 120.0, steepness: 20.0
 };
 
 const weightLabels = {
@@ -14,7 +15,9 @@ const weightLabels = {
   w4: "w₄ (Likes/Dislikes)", w5: "w₅ (Views)",
   a1: "a₁ (Like Weight)", a2: "a₂ (Dislike Weight)",
   b1: "b₁ (Cursory View Weight)", b2: "b₂ (Engaged View Weight)",
-  decay_constant: "Decay Constant"
+  decay_constant: "Decay Constant",
+  inflection: "Inflection Point (Logistic)",
+  steepness: "Steepness (Logistic)"
 };
 
 function App() {
