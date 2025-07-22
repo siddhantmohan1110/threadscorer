@@ -43,3 +43,14 @@ Each topic is seeded with example posts (`topics.py`) used to generate **centroi
 
 ## Project Structure
 
+threadscorer/
+│
+├── centroids.py          # Builds topic centroid embeddings
+├── embeddings.py         # Classifies posts and compares similarity
+├── post.py               # Defines Post class (title, text, classification)
+├── user.py               # Defines User class for topic interest tracking
+├── utils.py              # Embedding + cosine similarity + cache handling
+├── topics.py             # Predefined topic categories and example posts
+├── test_posts.py         # Sample Post objects for testing
+└── topic_centroids.json  # Generated centroid embeddings (created by centroids.py)
+
